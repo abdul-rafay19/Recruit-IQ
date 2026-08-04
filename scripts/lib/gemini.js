@@ -56,4 +56,3 @@ export async function geminiEmbed(text) {
   if (!data.embedding?.values) throw new Error('Gemini embed failed: ' + JSON.stringify(data).slice(0, 300));
   return data.embedding.values; // 768 numbers
 }
-Done
