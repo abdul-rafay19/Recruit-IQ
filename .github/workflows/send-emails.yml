@@ -1,0 +1,36 @@
+name: RecruitIQ Send Emails
+
+# Fires every 20 minutes, all week, all day — the script itself checks
+# business day + business-hour window + daily quota and exits in seconds
+# if it's not time to send. This keeps every single job short (a few
+# seconds to ~4 min with jitter) instead of one job sleeping for hours,
+# so it stays cheap even on a private repo's free minutes.
+on:
+  schedule:
+    - cron: '*/20 * * * *'
+  workflow_dispatch: {}
+
+jobs:
+  send-one:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: scripts
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+      GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+      YOUR_NAME: ${{ vars.YOUR_NAME }}
+      YOUR_EMAIL: ${{ vars.YOUR_EMAIL }}
+      CV_PUBLIC_URL: ${{ vars.CV_PUBLIC_URL }}
+      DAILY_EMAIL_LIMIT: ${{ vars.DAILY_EMAIL_LIMIT }}
+      SEND_WINDOW_START_HOUR_UTC: ${{ vars.SEND_WINDOW_START_HOUR_UTC }}
+      SEND_WINDOW_END_HOUR_UTC: ${{ vars.SEND_WINDOW_END_HOUR_UTC }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install
+      - run: node send-one-email.js

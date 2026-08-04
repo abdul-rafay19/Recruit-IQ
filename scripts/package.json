@@ -1,0 +1,24 @@
+{
+  "name": "recruitiq-scripts",
+  "version": "2.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "node test-all.js",
+    "index-resume": "node index-resume.js",
+    "discover": "node discover-jobs.js",
+    "score": "node score-jobs.js",
+    "contacts": "node find-contacts.js",
+    "generate": "node generate-emails.js",
+    "send-one": "node send-one-email.js",
+    "check-replies": "node check-replies.js",
+    "followups": "node send-followups.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
+    "dotenv": "^16.4.5",
+    "nodemailer": "^6.9.14",
+    "imapflow": "^1.0.167",
+    "mailparser": "^3.7.1"
+  }
+}

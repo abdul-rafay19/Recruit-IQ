@@ -1,0 +1,8 @@
+.env
+.env*
+*.env
+node_modules/
+.next/
+.vercel/
+*.log
+diag.js
