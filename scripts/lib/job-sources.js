@@ -1,6 +1,6 @@
 /**
  * RecruitIQ — Multi-Source Job Discovery Engine
- * Aggregates tech and AI/ML jobs from multiple free APIs (Arbeitnow, Remotive).
+ * Aggregates AI/ML jobs from multiple free APIs (Arbeitnow, Remotive).
  * Zero key required, highly reliable, and self-cleaning.
  */
 
@@ -55,8 +55,14 @@ export async function fetchJobsFromSources(queries = []) {
     console.warn('Remotive fetch notice:', e.message);
   }
 
-  // Filter jobs against search query keywords (e.g. AI, Engineer, Python, ML, LLM, Developer)
-  const keywords = ['ai', 'ml', 'machine learning', 'llm', 'python', 'engineer', 'developer', 'data', 'backend', 'full stack'];
+  // Filter jobs against AI/ML-specific keywords — tighter than a generic
+  // tech-job filter, so we don't waste Gemini calls scoring roles like
+  // "3D Environment Artist" or "Account Executive" that will never qualify.
+  const keywords = [
+    'ai engineer', 'machine learning', 'ml engineer', 'llm', 'deep learning',
+    'nlp', 'computer vision', 'data scientist', 'artificial intelligence',
+    'generative ai', 'python developer', 'ai/ml', 'rag ', 'genai'
+  ];
   const filtered = jobs.filter(j => {
     const text = `${j.job_title} ${j.job_description}`.toLowerCase();
     return keywords.some(kw => text.includes(kw));
